@@ -28,7 +28,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.dark,
       theme: lightThemeData,
       darkTheme: darkThemeData,
       home: const CategoriesScreen(),
