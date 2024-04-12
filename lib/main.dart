@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:meals/categories_screen.dart';
 import 'package:meals/theme.dart';
 
 final ThemeData lightThemeData = ThemeData(
@@ -26,13 +28,10 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      themeMode: ThemeMode.system,
       theme: lightThemeData,
       darkTheme: darkThemeData,
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+      home: const CategoriesScreen(),
     );
   }
 }
