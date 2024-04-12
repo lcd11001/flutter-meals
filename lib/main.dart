@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:meals/data/dummy_data.dart';
 
 import 'package:meals/screens/categories_screen.dart';
+import 'package:meals/screens/meals_screen.dart';
 import 'package:meals/theme.dart';
 
 final ThemeData lightThemeData = ThemeData(
@@ -31,7 +33,10 @@ class MainApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
       theme: lightThemeData,
       darkTheme: darkThemeData,
-      home: const CategoriesScreen(),
+      home: const MealsScreen(
+        title: 'Meals',
+        meals: dummyMeals,
+      ),
     );
   }
 }
