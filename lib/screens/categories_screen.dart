@@ -13,7 +13,7 @@ class CategoriesScreen extends StatelessWidget {
         builder: (ctx) {
           return MealsScreen(
             title: category.title,
-            meals: [],
+            meals: _filteredMeals(category),
           );
         },
       ),
@@ -47,5 +47,11 @@ class CategoriesScreen extends StatelessWidget {
           category: category,
           onSelectedCategory: (c) => _selectCategory(context, c));
     }).toList();
+  }
+
+  _filteredMeals(Category category) {
+    return dummyMeals
+        .where((element) => element.categories.contains(category.id))
+        .toList();
   }
 }

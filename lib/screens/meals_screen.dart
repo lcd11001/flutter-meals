@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
+import 'package:meals/widgets/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
   final String title;
@@ -56,13 +57,6 @@ class MealsScreen extends StatelessWidget {
   }
 
   Widget _buildMealItem(BuildContext context, int index) {
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
-    return Text(
-      meals[index].title,
-      style: textTheme.bodyMedium!.copyWith(
-        color: colorScheme.onBackground,
-      ),
-    );
+    return MealItem(meal: meals[index]);
   }
 }
