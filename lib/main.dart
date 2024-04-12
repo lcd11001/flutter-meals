@@ -1,4 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:meals/theme.dart';
+
+final ThemeData lightThemeData = ThemeData(
+  useMaterial3: true,
+  brightness: Brightness.light,
+  colorScheme: MaterialTheme.lightScheme().toColorScheme(),
+  textTheme: GoogleFonts.latoTextTheme(),
+);
+
+final ThemeData darkThemeData = ThemeData(
+  useMaterial3: true,
+  brightness: Brightness.dark,
+  colorScheme: MaterialTheme.darkScheme().toColorScheme(),
+  textTheme: GoogleFonts.latoTextTheme(),
+);
 
 void main() {
   runApp(const MainApp());
@@ -9,7 +25,9 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: lightThemeData,
+      darkTheme: darkThemeData,
       home: Scaffold(
         body: Center(
           child: Text('Hello World!'),
