@@ -4,17 +4,36 @@ import 'package:transparent_image/transparent_image.dart';
 
 class MealDetailScreen extends StatelessWidget {
   final Meal meal;
+  final void Function(String id) onToggleFavorite;
+  final bool Function(String id) isFavorite;
 
   const MealDetailScreen({
     super.key,
     required this.meal,
+    required this.onToggleFavorite,
+    required this.isFavorite,
   });
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
+        actions: [
+          IconButton(
+            icon: Icon(
+              isFavorite(meal.id) ? Icons.favorite : Icons.favorite_border,
+              color: isFavorite(meal.id)
+                  ? colorScheme.secondary
+                  : colorScheme.onBackground,
+            ),
+            onPressed: () {
+              onToggleFavorite(meal.id);
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

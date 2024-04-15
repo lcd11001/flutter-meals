@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:meals/data/dummy_data.dart';
+import 'package:meals/models/meal.dart';
 import 'package:meals/screens/categories_screen.dart';
 import 'package:meals/screens/meals_screen.dart';
 
@@ -12,6 +14,33 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedPageIndex = 0;
   String _title = 'Categories';
+  final List<String> _favoriteMealIds = [];
+
+  void _toggleFavorite(String mealId) {
+    final existingIndex = _favoriteMealIds.indexOf(mealId);
+
+    if (existingIndex >= 0) {
+      setState(() {
+        _favoriteMealIds.removeAt(existingIndex);
+      });
+    } else {
+      setState(() {
+        _favoriteMealIds.add(mealId);
+      });
+    }
+
+    debugPrint('Favorite meal ids: $_favoriteMealIds');
+  }
+
+  bool _isFavorite(String mealId) {
+    return _favoriteMealIds.contains(mealId);
+  }
+
+  List<Meal> _getFavoriteMeals(List<Meal> meals) {
+    return meals.where((meal) {
+      return _favoriteMealIds.contains(meal.id);
+    }).toList();
+  }
 
   void _selectPage(int index) {
     setState(() {
@@ -35,14 +64,18 @@ class _TabsScreenState extends State<TabsScreen> {
 
   Widget _getActivePage() {
     switch (_selectedPageIndex) {
-      case 0:
-        return const CategoriesScreen();
-
       case 1:
-        return const MealsScreen(meals: []);
+        return MealsScreen(
+          meals: _getFavoriteMeals(dummyMeals),
+          onToggleFavorite: _toggleFavorite,
+          isFavorite: _isFavorite,
+        );
 
       default:
-        return const CategoriesScreen();
+        return CategoriesScreen(
+          onToggleFavorite: _toggleFavorite,
+          isFavorite: _isFavorite,
+        );
     }
   }
 
