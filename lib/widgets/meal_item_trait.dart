@@ -19,7 +19,7 @@ class MealItemTrait extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: colorScheme.onInverseSurface,
+          color: Colors.white,
           size: 17,
         ),
         const SizedBox(
@@ -28,7 +28,7 @@ class MealItemTrait extends StatelessWidget {
         Text(
           label,
           style: textTheme.bodyMedium!.copyWith(
-            color: colorScheme.onInverseSurface,
+            color: Colors.white,
           ),
         ),
       ],

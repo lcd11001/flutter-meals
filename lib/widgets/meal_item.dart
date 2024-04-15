@@ -55,7 +55,7 @@ class MealItem extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                color: colorScheme.inverseSurface.withOpacity(0.8),
+                color: Colors.black.withOpacity(0.7),
                 padding:
                     const EdgeInsets.symmetric(vertical: 6, horizontal: 44),
                 child: Column(
@@ -67,7 +67,7 @@ class MealItem extends StatelessWidget {
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.bodyMedium!.copyWith(
-                        color: colorScheme.onInverseSurface,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(
