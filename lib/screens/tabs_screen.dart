@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:meals/data/dummy_data.dart';
 import 'package:meals/models/meal.dart';
+
 import 'package:meals/screens/categories_screen.dart';
 import 'package:meals/screens/meals_screen.dart';
+
+import 'package:meals/widgets/main_drawer.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -93,14 +97,11 @@ class _TabsScreenState extends State<TabsScreen> {
 
   String _getTitle() {
     switch (_selectedPageIndex) {
-      case 0:
-        return 'Categories';
-
       case 1:
         return 'Your Favorites';
 
       default:
-        return 'Categories';
+        return 'Select Category';
     }
   }
 
@@ -127,21 +128,36 @@ class _TabsScreenState extends State<TabsScreen> {
       appBar: AppBar(
         title: Text(_title),
       ),
-      body: _getActivePage(),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedPageIndex,
-        onTap: _selectPage,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.category),
-            label: 'Categories',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            label: 'Favorites',
-          ),
-        ],
+      drawer: MainDrawer(
+        onDrawerItemTap: _setScreen,
       ),
+      body: _getActivePage(),
+      bottomNavigationBar: _buildTabBar(),
     );
+  }
+
+  Widget _buildTabBar() {
+    return BottomNavigationBar(
+      currentIndex: _selectedPageIndex,
+      onTap: _selectPage,
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.category),
+          label: 'Categories',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.star),
+          label: 'Favorites',
+        ),
+      ],
+    );
+  }
+
+  void _setScreen(String value) {
+    if (value == 'Filters') {
+    } else if (value == 'Meals') {
+      // close the drawer manually
+      Navigator.of(context).pop();
+    }
   }
 }
