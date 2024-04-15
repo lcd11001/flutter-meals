@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:meals/widgets/meal_portrait.dart';
 
 class MealDetailScreen extends StatefulWidget {
   final Meal meal;
@@ -60,13 +60,7 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FadeInImage(
-              placeholder: MemoryImage(kTransparentImage),
-              image: NetworkImage(widget.meal.imageUrl),
-              fit: BoxFit.cover,
-              height: 300,
-              width: double.infinity,
-            ),
+            MealPortrait(meal: widget.meal),
             const SizedBox(height: 20),
             _buildDetail(context, 'Ingredients', widget.meal.ingredients),
             const SizedBox(height: 20),
