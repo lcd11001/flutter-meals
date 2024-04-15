@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:meals/models/meal.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -13,9 +12,6 @@ class MealDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
@@ -75,7 +71,7 @@ class MealDetailScreen extends StatelessWidget {
                   padding: EdgeInsets.only(top: 3.0),
                   child: Icon(
                     Icons.arrow_right,
-                    size: 15,
+                    size: 16,
                   ),
                 ),
                 const SizedBox(width: 8),

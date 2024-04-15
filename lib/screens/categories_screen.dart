@@ -24,20 +24,15 @@ class CategoriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     const kPadding = 20.0;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pick your category'),
+    return GridView(
+      padding: const EdgeInsets.all(kPadding),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 3 / 2,
+        crossAxisSpacing: kPadding,
+        mainAxisSpacing: kPadding,
       ),
-      body: GridView(
-        padding: const EdgeInsets.all(kPadding),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: kPadding,
-          mainAxisSpacing: kPadding,
-        ),
-        children: _buildGridItems(context),
-      ),
+      children: _buildGridItems(context),
     );
   }
 

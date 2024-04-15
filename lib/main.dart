@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:meals/screens/categories_screen.dart';
+import 'package:meals/screens/tabs_screen.dart';
 import 'package:meals/theme.dart';
 
 final ThemeData lightThemeData = ThemeData(
@@ -31,7 +31,7 @@ class MainApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: lightThemeData,
       darkTheme: darkThemeData,
-      home: const CategoriesScreen(),
+      home: const TabsScreen(),
     );
   }
 }

@@ -4,10 +4,10 @@ import 'package:meals/screens/meal_detail_screen.dart';
 import 'package:meals/widgets/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
-  final String title;
+  final String? title;
   final List<Meal> meals;
 
-  const MealsScreen({super.key, required this.title, required this.meals});
+  const MealsScreen({super.key, this.title, required this.meals});
 
   void _selectMeal(BuildContext context, Meal meal) {
     Navigator.of(context).push(
@@ -25,9 +25,13 @@ class MealsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget content = meals.isEmpty ? _buildEmptyList() : _buildMealList();
 
+    if (title == null) {
+      return content;
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(title!),
       ),
       body: content,
     );
@@ -43,7 +47,7 @@ class MealsScreen extends StatelessWidget {
           children: [
             Text(
               'No meals found, please add some!',
-              style: textTheme.headlineLarge!.copyWith(
+              style: textTheme.titleLarge!.copyWith(
                 color: colorScheme.onBackground,
               ),
               textAlign: TextAlign.center,
@@ -51,7 +55,7 @@ class MealsScreen extends StatelessWidget {
             const SizedBox(height: 20),
             Text(
               'Try selecting a different category.',
-              style: textTheme.headlineMedium!.copyWith(
+              style: textTheme.titleMedium!.copyWith(
                 color: colorScheme.onBackground,
               ),
               textAlign: TextAlign.center,
