@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class MealDetailScreen extends StatelessWidget {
+class MealDetailScreen extends StatefulWidget {
   final Meal meal;
-  final void Function(String id) onToggleFavorite;
+  final bool Function(String id) onToggleFavorite;
   final bool Function(String id) isFavorite;
 
   const MealDetailScreen({
@@ -15,24 +15,42 @@ class MealDetailScreen extends StatelessWidget {
   });
 
   @override
+  State<StatefulWidget> createState() => _MealDetailScreenState();
+}
+
+class _MealDetailScreenState extends State<MealDetailScreen> {
+  late bool _isFavorite;
+  @override
+  void initState() {
+    super.initState();
+    _isFavorite = widget.isFavorite(widget.meal.id);
+  }
+
+  void _setFavorite(bool value) {
+    setState(() {
+      _isFavorite = value;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(meal.title),
+        title: Text(widget.meal.title),
         actions: [
           Semantics(
             label: 'Favorite',
             child: IconButton(
               icon: Icon(
-                isFavorite(meal.id) ? Icons.favorite : Icons.favorite_border,
-                color: isFavorite(meal.id)
+                _isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: _isFavorite
                     ? colorScheme.secondary
                     : colorScheme.onBackground,
               ),
               onPressed: () {
-                onToggleFavorite(meal.id);
+                _setFavorite(widget.onToggleFavorite(widget.meal.id));
               },
             ),
           ),
@@ -44,15 +62,15 @@ class MealDetailScreen extends StatelessWidget {
           children: [
             FadeInImage(
               placeholder: MemoryImage(kTransparentImage),
-              image: NetworkImage(meal.imageUrl),
+              image: NetworkImage(widget.meal.imageUrl),
               fit: BoxFit.cover,
               height: 300,
               width: double.infinity,
             ),
             const SizedBox(height: 20),
-            _buildDetail(context, 'Ingredients', meal.ingredients),
+            _buildDetail(context, 'Ingredients', widget.meal.ingredients),
             const SizedBox(height: 20),
-            _buildDetail(context, 'Steps', meal.steps),
+            _buildDetail(context, 'Steps', widget.meal.steps),
           ],
         ),
       ),

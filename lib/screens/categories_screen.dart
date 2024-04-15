@@ -5,7 +5,7 @@ import 'package:meals/screens/meals_screen.dart';
 import 'package:meals/widgets/category_grid_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  final void Function(String id) onToggleFavorite;
+  final bool Function(String id) onToggleFavorite;
   final bool Function(String id) isFavorite;
 
   const CategoriesScreen({

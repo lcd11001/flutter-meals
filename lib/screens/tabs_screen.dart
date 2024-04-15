@@ -46,7 +46,7 @@ class _TabsScreenState extends State<TabsScreen> {
     );
   }
 
-  void _toggleFavorite(String mealId) {
+  bool _toggleFavorite(String mealId) {
     final existingIndex = _favoriteMealIds.indexOf(mealId);
 
     if (existingIndex >= 0) {
@@ -69,7 +69,9 @@ class _TabsScreenState extends State<TabsScreen> {
       );
     }
 
-    debugPrint('Favorite meal ids: $_favoriteMealIds');
+    //return _isFavorite(mealId);
+    // optimize the code by returning the result directly
+    return existingIndex < 0;
   }
 
   bool _isFavorite(String mealId) {

@@ -6,7 +6,7 @@ import 'package:meals/widgets/meal_item.dart';
 class MealsScreen extends StatelessWidget {
   final String? title;
   final List<Meal> meals;
-  final void Function(String id) onToggleFavorite;
+  final bool Function(String id) onToggleFavorite;
   final bool Function(String id) isFavorite;
 
   const MealsScreen({
