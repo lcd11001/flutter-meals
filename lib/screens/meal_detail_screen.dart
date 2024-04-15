@@ -22,16 +22,19 @@ class MealDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(meal.title),
         actions: [
-          IconButton(
-            icon: Icon(
-              isFavorite(meal.id) ? Icons.favorite : Icons.favorite_border,
-              color: isFavorite(meal.id)
-                  ? colorScheme.secondary
-                  : colorScheme.onBackground,
+          Semantics(
+            label: 'Favorite',
+            child: IconButton(
+              icon: Icon(
+                isFavorite(meal.id) ? Icons.favorite : Icons.favorite_border,
+                color: isFavorite(meal.id)
+                    ? colorScheme.secondary
+                    : colorScheme.onBackground,
+              ),
+              onPressed: () {
+                onToggleFavorite(meal.id);
+              },
             ),
-            onPressed: () {
-              onToggleFavorite(meal.id);
-            },
           ),
         ],
       ),

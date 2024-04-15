@@ -16,6 +16,36 @@ class _TabsScreenState extends State<TabsScreen> {
   String _title = 'Categories';
   final List<String> _favoriteMealIds = [];
 
+  void _showInfoMessage(String message, IconData iconData) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: colorScheme.primaryContainer,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              iconData,
+              color: colorScheme.onPrimaryContainer,
+              size: 16,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              message,
+              style: textTheme.labelMedium!.copyWith(
+                color: colorScheme.onPrimaryContainer,
+              ),
+            ),
+          ],
+        ),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   void _toggleFavorite(String mealId) {
     final existingIndex = _favoriteMealIds.indexOf(mealId);
 
@@ -23,10 +53,20 @@ class _TabsScreenState extends State<TabsScreen> {
       setState(() {
         _favoriteMealIds.removeAt(existingIndex);
       });
+
+      _showInfoMessage(
+        "Meal has been removed from your favorites!",
+        Icons.delete,
+      );
     } else {
       setState(() {
         _favoriteMealIds.add(mealId);
       });
+
+      _showInfoMessage(
+        "Meal has been added to your favorites!",
+        Icons.favorite,
+      );
     }
 
     debugPrint('Favorite meal ids: $_favoriteMealIds');
