@@ -4,6 +4,7 @@ import 'package:meals/data/dummy_data.dart';
 import 'package:meals/models/meal.dart';
 
 import 'package:meals/screens/categories_screen.dart';
+import 'package:meals/screens/filters_screen.dart';
 import 'package:meals/screens/meals_screen.dart';
 
 import 'package:meals/widgets/main_drawer.dart';
@@ -155,6 +156,9 @@ class _TabsScreenState extends State<TabsScreen> {
 
   void _setScreen(String value) {
     if (value == 'Filters') {
+      Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+        return const FiltersScreen();
+      }));
     } else if (value == 'Meals') {
       // close the drawer manually
       Navigator.of(context).pop();
