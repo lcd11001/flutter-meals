@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meals/widgets/filter_item.dart';
 
 class FiltersScreen extends StatefulWidget {
   const FiltersScreen({super.key});
@@ -10,41 +11,25 @@ class FiltersScreen extends StatefulWidget {
 class _FiltersScreenState extends State<FiltersScreen> {
   bool _glutenFree = false;
 
+  void _setGlutenFree(bool isChecked) {
+    setState(() {
+      _glutenFree = isChecked;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Filters'),
       ),
       body: Column(
         children: [
-          SwitchListTile(
-            value: _glutenFree,
-            onChanged: (isChecked) {
-              setState(() {
-                _glutenFree = isChecked;
-              });
-            },
-            title: Text(
-              'Gluten-free',
-              style: textTheme.titleLarge!.copyWith(
-                color: colorScheme.onBackground,
-              ),
-            ),
-            subtitle: Text(
-              'Only include gluten-free meals.',
-              style: textTheme.labelMedium!.copyWith(
-                color: colorScheme.onBackground,
-              ),
-            ),
-            activeColor: colorScheme.tertiary,
-            contentPadding: const EdgeInsets.only(
-              left: 32,
-              right: 16,
-            ),
+          FilterItem(
+            isChecked: _glutenFree,
+            onChanged: _setGlutenFree,
+            title: "Gluten-free",
+            subtitle: "Only include gluten-free meals.",
           ),
         ],
       ),
