@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:meals/models/category.dart';
 
-import 'package:meals/data/dummy_data.dart';
 import 'package:meals/models/meal.dart';
 
 import 'package:meals/screens/categories_screen.dart';
@@ -10,7 +10,14 @@ import 'package:meals/screens/meals_screen.dart';
 import 'package:meals/widgets/main_drawer.dart';
 
 class TabsScreen extends StatefulWidget {
-  const TabsScreen({super.key});
+  final List<Meal> meals;
+  final List<Category> categories;
+
+  const TabsScreen({
+    super.key,
+    required this.meals,
+    required this.categories,
+  });
 
   @override
   State<StatefulWidget> createState() => _TabsScreenState();
@@ -20,6 +27,14 @@ class _TabsScreenState extends State<TabsScreen> {
   int _selectedPageIndex = 0;
   String _title = 'Categories';
   final List<String> _favoriteMealIds = [];
+
+  // do not use 'final' here, because we will update the values
+  final Map<FilterType, bool> _selectedFilters = {
+    FilterType.glutenFree: false,
+    FilterType.lactoseFree: false,
+    FilterType.vegetarian: false,
+    FilterType.vegan: false,
+  };
 
   void _showInfoMessage(String message, IconData iconData) {
     final textTheme = Theme.of(context).textTheme;
@@ -110,7 +125,7 @@ class _TabsScreenState extends State<TabsScreen> {
     switch (_selectedPageIndex) {
       case 1:
         return MealsScreen(
-          meals: _getFavoriteMeals(dummyMeals),
+          meals: _getFavoriteMeals(widget.meals),
           onToggleFavorite: _toggleFavorite,
           isFavorite: _isFavorite,
         );
@@ -119,8 +134,32 @@ class _TabsScreenState extends State<TabsScreen> {
         return CategoriesScreen(
           onToggleFavorite: _toggleFavorite,
           isFavorite: _isFavorite,
+          meals: _getFilteredMeals(widget.meals),
+          categories: widget.categories,
         );
     }
+  }
+
+  List<Meal> _getFilteredMeals(List<Meal> meals) {
+    return meals.where((meal) {
+      if (_selectedFilters[FilterType.glutenFree]! && !meal.isGlutenFree) {
+        return false;
+      }
+
+      if (_selectedFilters[FilterType.lactoseFree]! && !meal.isLactoseFree) {
+        return false;
+      }
+
+      if (_selectedFilters[FilterType.vegetarian]! && !meal.isVegetarian) {
+        return false;
+      }
+
+      if (_selectedFilters[FilterType.vegan]! && !meal.isVegan) {
+        return false;
+      }
+
+      return true;
+    }).toList();
   }
 
   @override
@@ -154,15 +193,24 @@ class _TabsScreenState extends State<TabsScreen> {
     );
   }
 
-  void _setScreen(String value) {
+  void _setScreen(String value) async {
     Navigator.of(context).pop();
 
     if (value == 'Filters') {
-      Navigator.of(context).pushReplacement(
+      // Navigator.of(context).pushReplacement(
+      final result = await Navigator.of(context).push<Map<FilterType, bool>>(
         MaterialPageRoute(
           builder: (ctx) => const FiltersScreen(),
         ),
       );
+
+      // debugPrint('Filters result: $result');
+      setState(() {
+        if (result != null) {
+          _selectedFilters.addAll(result);
+        }
+      });
+      debugPrint('Selected filters: $_selectedFilters');
     }
   }
 }

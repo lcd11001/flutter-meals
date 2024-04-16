@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:meals/screens/tabs_screen.dart';
 import 'package:meals/widgets/filter_item.dart';
-import 'package:meals/widgets/main_drawer.dart';
+
+enum FilterType {
+  glutenFree,
+  lactoseFree,
+  vegetarian,
+  vegan,
+}
 
 class FiltersScreen extends StatefulWidget {
   const FiltersScreen({super.key});
@@ -46,49 +51,50 @@ class _FiltersScreenState extends State<FiltersScreen> {
       appBar: AppBar(
         title: const Text('Your Filters'),
       ),
-      drawer: MainDrawer(
-        onDrawerItemTap: _setScreen,
-      ),
-      body: Column(
-        children: [
-          FilterItem(
-            isChecked: _glutenFree,
-            onChanged: _setGlutenFree,
-            title: "Gluten-free",
-            subtitle: "Only include gluten-free meals.",
-          ),
-          FilterItem(
-            isChecked: _lactoseFree,
-            onChanged: _setLactoseFree,
-            title: "Lactose-free",
-            subtitle: "Only include lactose-free meals.",
-          ),
-          FilterItem(
-            isChecked: _vegan,
-            onChanged: _setVegan,
-            title: "Vegan",
-            subtitle: "Only include vegan meals.",
-          ),
-          FilterItem(
-            isChecked: _vegetarian,
-            onChanged: _setVegetarian,
-            title: "Vegetarian",
-            subtitle: "Only include vegetarian meals.",
-          ),
-        ],
+      body: PopScope(
+        // mark this as 'false' to wait return value from popInvoked
+        canPop: false,
+        onPopInvoked: (didPop) {
+          debugPrint('didPop: $didPop');
+          if (didPop) {
+            return;
+          }
+          Navigator.of(context).pop({
+            FilterType.glutenFree: _glutenFree,
+            FilterType.lactoseFree: _lactoseFree,
+            FilterType.vegetarian: _vegetarian,
+            FilterType.vegan: _vegan,
+          });
+        },
+        child: Column(
+          children: [
+            FilterItem(
+              isChecked: _glutenFree,
+              onChanged: _setGlutenFree,
+              title: "Gluten-free",
+              subtitle: "Only include gluten-free meals.",
+            ),
+            FilterItem(
+              isChecked: _lactoseFree,
+              onChanged: _setLactoseFree,
+              title: "Lactose-free",
+              subtitle: "Only include lactose-free meals.",
+            ),
+            FilterItem(
+              isChecked: _vegan,
+              onChanged: _setVegan,
+              title: "Vegan",
+              subtitle: "Only include vegan meals.",
+            ),
+            FilterItem(
+              isChecked: _vegetarian,
+              onChanged: _setVegetarian,
+              title: "Vegetarian",
+              subtitle: "Only include vegetarian meals.",
+            ),
+          ],
+        ),
       ),
     );
-  }
-
-  void _setScreen(String value) {
-    Navigator.of(context).pop();
-
-    if (value == 'Meals') {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (ctx) => const TabsScreen(),
-        ),
-      );
-    }
   }
 }
