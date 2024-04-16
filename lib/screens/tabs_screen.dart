@@ -155,13 +155,14 @@ class _TabsScreenState extends State<TabsScreen> {
   }
 
   void _setScreen(String value) {
+    Navigator.of(context).pop();
+
     if (value == 'Filters') {
-      Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-        return const FiltersScreen();
-      }));
-    } else if (value == 'Meals') {
-      // close the drawer manually
-      Navigator.of(context).pop();
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (ctx) => const FiltersScreen(),
+        ),
+      );
     }
   }
 }
