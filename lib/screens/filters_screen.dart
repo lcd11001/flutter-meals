@@ -12,10 +12,31 @@ class FiltersScreen extends StatefulWidget {
 
 class _FiltersScreenState extends State<FiltersScreen> {
   bool _glutenFree = false;
+  bool _lactoseFree = false;
+  bool _vegetarian = false;
+  bool _vegan = false;
 
   void _setGlutenFree(bool isChecked) {
     setState(() {
       _glutenFree = isChecked;
+    });
+  }
+
+  void _setLactoseFree(bool isChecked) {
+    setState(() {
+      _lactoseFree = isChecked;
+    });
+  }
+
+  void _setVegetarian(bool isChecked) {
+    setState(() {
+      _vegetarian = isChecked;
+    });
+  }
+
+  void _setVegan(bool isChecked) {
+    setState(() {
+      _vegan = isChecked;
     });
   }
 
@@ -35,6 +56,24 @@ class _FiltersScreenState extends State<FiltersScreen> {
             onChanged: _setGlutenFree,
             title: "Gluten-free",
             subtitle: "Only include gluten-free meals.",
+          ),
+          FilterItem(
+            isChecked: _lactoseFree,
+            onChanged: _setLactoseFree,
+            title: "Lactose-free",
+            subtitle: "Only include lactose-free meals.",
+          ),
+          FilterItem(
+            isChecked: _vegan,
+            onChanged: _setVegan,
+            title: "Vegan",
+            subtitle: "Only include vegan meals.",
+          ),
+          FilterItem(
+            isChecked: _vegetarian,
+            onChanged: _setVegetarian,
+            title: "Vegetarian",
+            subtitle: "Only include vegetarian meals.",
           ),
         ],
       ),
