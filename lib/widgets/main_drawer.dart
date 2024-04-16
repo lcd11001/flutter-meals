@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meals/widgets/drawer_item.dart';
 
 class MainDrawer extends StatelessWidget {
   final void Function(String value) onDrawerItemTap;
@@ -46,37 +47,15 @@ class MainDrawer extends StatelessWidget {
             ],
           ),
         ),
-        ListTile(
-          leading: Icon(
-            Icons.restaurant,
-            size: 24,
-            color: colorScheme.onBackground,
-          ),
-          title: Text(
-            'Meals',
-            style: textTheme.titleLarge!.copyWith(
-              color: colorScheme.onBackground,
-            ),
-          ),
-          onTap: () {
-            onDrawerItemTap('Meals');
-          },
+        DrawerItem(
+          title: 'Meals',
+          onDrawerItemTap: onDrawerItemTap,
+          leadingIcon: Icons.restaurant,
         ),
-        ListTile(
-          leading: Icon(
-            Icons.settings,
-            size: 24,
-            color: colorScheme.onBackground,
-          ),
-          title: Text(
-            'Filters',
-            style: textTheme.titleLarge!.copyWith(
-              color: colorScheme.onBackground,
-            ),
-          ),
-          onTap: () {
-            onDrawerItemTap('Filters');
-          },
+        DrawerItem(
+          title: 'Filters',
+          onDrawerItemTap: onDrawerItemTap,
+          leadingIcon: Icons.settings,
         ),
       ]),
     );
