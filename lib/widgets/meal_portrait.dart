@@ -16,39 +16,42 @@ class MealPortrait extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    return FadeInImage(
-      placeholder: MemoryImage(kTransparentImage),
-      image: CachedNetworkImageProvider(
-        meal.imageUrl,
-        errorListener: (err) {
-          debugPrint("Error loading image: $err");
-        },
-      ),
-      imageErrorBuilder: (context, error, stackTrace) => Container(
-        height: 200,
-        decoration: BoxDecoration(
-          color: colorScheme.errorContainer,
+    return Hero(
+      tag: meal.id,
+      child: FadeInImage(
+        placeholder: MemoryImage(kTransparentImage),
+        image: CachedNetworkImageProvider(
+          meal.imageUrl,
+          errorListener: (err) {
+            debugPrint("Error loading image: $err");
+          },
         ),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.error),
-              const SizedBox(width: 8),
-              Text(
-                "Error loading image",
-                style: textTheme.bodyMedium!.copyWith(
-                  color: colorScheme.onErrorContainer,
+        imageErrorBuilder: (context, error, stackTrace) => Container(
+          height: 200,
+          decoration: BoxDecoration(
+            color: colorScheme.errorContainer,
+          ),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.error),
+                const SizedBox(width: 8),
+                Text(
+                  "Error loading image",
+                  style: textTheme.bodyMedium!.copyWith(
+                    color: colorScheme.onErrorContainer,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
+        imageSemanticLabel: "screen shot ${meal.title}",
+        fit: BoxFit.cover,
+        height: 200,
+        width: double.infinity,
       ),
-      imageSemanticLabel: "screen shot ${meal.title}",
-      fit: BoxFit.cover,
-      height: 200,
-      width: double.infinity,
     );
   }
 }
