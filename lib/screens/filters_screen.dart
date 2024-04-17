@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:meals/providers/filters_provider.dart';
+
 import 'package:meals/widgets/filter_item.dart';
 
-enum FilterType {
-  glutenFree,
-  lactoseFree,
-  vegetarian,
-  vegan,
-}
-
-class FiltersScreen extends StatefulWidget {
-  final Map<FilterType, bool> currentFilters;
-
-  const FiltersScreen({super.key, required this.currentFilters});
+class FiltersScreen extends ConsumerStatefulWidget {
+  const FiltersScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _FiltersScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _FiltersScreenState();
 }
 
-class _FiltersScreenState extends State<FiltersScreen> {
+class _FiltersScreenState extends ConsumerState<FiltersScreen> {
   late bool _glutenFree;
   late bool _lactoseFree;
   late bool _vegetarian;
@@ -26,10 +21,12 @@ class _FiltersScreenState extends State<FiltersScreen> {
   @override
   void initState() {
     super.initState();
-    _glutenFree = widget.currentFilters[FilterType.glutenFree] ?? false;
-    _lactoseFree = widget.currentFilters[FilterType.lactoseFree] ?? false;
-    _vegetarian = widget.currentFilters[FilterType.vegetarian] ?? false;
-    _vegan = widget.currentFilters[FilterType.vegan] ?? false;
+    final currentFilters = ref.read(filtersProvider);
+
+    _glutenFree = currentFilters[FilterType.glutenFree] ?? false;
+    _lactoseFree = currentFilters[FilterType.lactoseFree] ?? false;
+    _vegetarian = currentFilters[FilterType.vegetarian] ?? false;
+    _vegan = currentFilters[FilterType.vegan] ?? false;
   }
 
   void _setGlutenFree(bool isChecked) {
@@ -63,19 +60,21 @@ class _FiltersScreenState extends State<FiltersScreen> {
         title: const Text('Your Filters'),
       ),
       body: PopScope(
-        // mark this as 'false' to wait return value from popInvoked
-        canPop: false,
+        // mark this as 'false' to wait return value from popInvoked if we don't use provider
+        // mark this as 'true' to close this immediately as we use provider
+        canPop: true,
         onPopInvoked: (didPop) {
-          debugPrint('didPop: $didPop');
-          if (didPop) {
-            return;
-          }
-          Navigator.of(context).pop({
+          // debugPrint('didPop: $didPop');
+          // if (didPop) {
+          //   return;
+          // }
+          ref.read(filtersProvider.notifier).setFilters({
             FilterType.glutenFree: _glutenFree,
             FilterType.lactoseFree: _lactoseFree,
             FilterType.vegetarian: _vegetarian,
             FilterType.vegan: _vegan,
           });
+          // Navigator.of(context).pop();
         },
         child: Column(
           children: [

@@ -11,6 +11,7 @@ import 'package:meals/widgets/main_drawer.dart';
 
 import 'package:meals/providers/meal_provider.dart';
 import 'package:meals/providers/favorites_provider.dart';
+import 'package:meals/providers/filters_provider.dart';
 
 class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
@@ -22,14 +23,6 @@ class TabsScreen extends ConsumerStatefulWidget {
 class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
   String _title = 'Categories';
-
-  // do not use 'final' here, because we will update the values
-  final Map<FilterType, bool> _selectedFilters = {
-    FilterType.glutenFree: false,
-    FilterType.lactoseFree: false,
-    FilterType.vegetarian: false,
-    FilterType.vegan: false,
-  };
 
   List<Meal> _getFavoriteMeals() {
     final meals = ref.watch(mealsProvider);
@@ -74,21 +67,22 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
   List<Meal> _getFilteredMeals() {
     final meals = ref.watch(mealsProvider);
+    final selectedFilters = ref.watch(filtersProvider);
 
     return meals.where((meal) {
-      if (_selectedFilters[FilterType.glutenFree]! && !meal.isGlutenFree) {
+      if (selectedFilters[FilterType.glutenFree]! && !meal.isGlutenFree) {
         return false;
       }
 
-      if (_selectedFilters[FilterType.lactoseFree]! && !meal.isLactoseFree) {
+      if (selectedFilters[FilterType.lactoseFree]! && !meal.isLactoseFree) {
         return false;
       }
 
-      if (_selectedFilters[FilterType.vegetarian]! && !meal.isVegetarian) {
+      if (selectedFilters[FilterType.vegetarian]! && !meal.isVegetarian) {
         return false;
       }
 
-      if (_selectedFilters[FilterType.vegan]! && !meal.isVegan) {
+      if (selectedFilters[FilterType.vegan]! && !meal.isVegan) {
         return false;
       }
 
@@ -127,26 +121,16 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     );
   }
 
-  void _setScreen(String value) async {
+  void _setScreen(String value) {
     Navigator.of(context).pop();
 
     if (value == 'Filters') {
       // Navigator.of(context).pushReplacement(
-      final result = await Navigator.of(context).push<Map<FilterType, bool>>(
+      Navigator.of(context).push<Map<FilterType, bool>>(
         MaterialPageRoute(
-          builder: (ctx) => FiltersScreen(
-            currentFilters: _selectedFilters,
-          ),
+          builder: (ctx) => const FiltersScreen(),
         ),
       );
-
-      // debugPrint('Filters result: $result');
-      setState(() {
-        if (result != null) {
-          _selectedFilters.addAll(result);
-        }
-      });
-      debugPrint('Selected filters: $_selectedFilters');
     }
   }
 }
