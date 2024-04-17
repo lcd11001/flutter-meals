@@ -1,56 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:meals/models/meal.dart';
+import 'package:meals/providers/favorites_provider.dart';
 import 'package:meals/widgets/meal_portrait.dart';
 
-class MealDetailScreen extends StatefulWidget {
+class MealDetailScreen extends ConsumerWidget {
   final Meal meal;
-  final bool Function(String id) onToggleFavorite;
-  final bool Function(String id) isFavorite;
 
   const MealDetailScreen({
     super.key,
     required this.meal,
-    required this.onToggleFavorite,
-    required this.isFavorite,
   });
 
-  @override
-  State<StatefulWidget> createState() => _MealDetailScreenState();
-}
-
-class _MealDetailScreenState extends State<MealDetailScreen> {
-  late bool _isFavorite;
-  @override
-  void initState() {
-    super.initState();
-    _isFavorite = widget.isFavorite(widget.meal.id);
-  }
-
-  void _setFavorite(bool value) {
-    setState(() {
-      _isFavorite = value;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  void _showInfoMessage(
+      BuildContext context, String message, IconData iconData) {
+    final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: colorScheme.primaryContainer,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              iconData,
+              color: colorScheme.onPrimaryContainer,
+              size: 16,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              message,
+              style: textTheme.labelMedium!.copyWith(
+                color: colorScheme.onPrimaryContainer,
+              ),
+            ),
+          ],
+        ),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final notifier = ref.watch(favoritesProvider.notifier);
+
+    final isFavorite = notifier.isFavorite(meal.id);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.meal.title),
+        title: Text(meal.title),
         actions: [
           Semantics(
             label: 'Favorite',
             child: IconButton(
               icon: Icon(
-                _isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: _isFavorite
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: isFavorite
                     ? colorScheme.secondary
                     : colorScheme.onBackground,
               ),
               onPressed: () {
-                _setFavorite(widget.onToggleFavorite(widget.meal.id));
+                final wasAdded = notifier.toggleFavorite(meal.id);
+
+                _showInfoMessage(
+                  context,
+                  wasAdded ? 'Added to favorites' : 'Removed from favorites',
+                  wasAdded ? Icons.favorite : Icons.delete,
+                );
               },
             ),
           ),
@@ -60,11 +81,11 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MealPortrait(meal: widget.meal),
+            MealPortrait(meal: meal),
             const SizedBox(height: 20),
-            _buildDetail(context, 'Ingredients', widget.meal.ingredients),
+            _buildDetail(context, 'Ingredients', meal.ingredients),
             const SizedBox(height: 20),
-            _buildDetail(context, 'Steps', widget.meal.steps),
+            _buildDetail(context, 'Steps', meal.steps),
           ],
         ),
       ),

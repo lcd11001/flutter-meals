@@ -10,6 +10,7 @@ import 'package:meals/screens/meals_screen.dart';
 import 'package:meals/widgets/main_drawer.dart';
 
 import 'package:meals/providers/meal_provider.dart';
+import 'package:meals/providers/favorites_provider.dart';
 
 class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
@@ -21,7 +22,6 @@ class TabsScreen extends ConsumerStatefulWidget {
 class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
   String _title = 'Categories';
-  final List<String> _favoriteMealIds = [];
 
   // do not use 'final' here, because we will update the values
   final Map<FilterType, bool> _selectedFilters = {
@@ -31,73 +31,12 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     FilterType.vegan: false,
   };
 
-  void _showInfoMessage(String message, IconData iconData) {
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
-
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: colorScheme.primaryContainer,
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              iconData,
-              color: colorScheme.onPrimaryContainer,
-              size: 16,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              message,
-              style: textTheme.labelMedium!.copyWith(
-                color: colorScheme.onPrimaryContainer,
-              ),
-            ),
-          ],
-        ),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
-
-  bool _toggleFavorite(String mealId) {
-    final existingIndex = _favoriteMealIds.indexOf(mealId);
-
-    if (existingIndex >= 0) {
-      setState(() {
-        _favoriteMealIds.removeAt(existingIndex);
-      });
-
-      _showInfoMessage(
-        "Meal has been removed from your favorites!",
-        Icons.delete,
-      );
-    } else {
-      setState(() {
-        _favoriteMealIds.add(mealId);
-      });
-
-      _showInfoMessage(
-        "Meal has been added to your favorites!",
-        Icons.favorite,
-      );
-    }
-
-    //return _isFavorite(mealId);
-    // optimize the code by returning the result directly
-    return existingIndex < 0;
-  }
-
-  bool _isFavorite(String mealId) {
-    return _favoriteMealIds.contains(mealId);
-  }
-
   List<Meal> _getFavoriteMeals() {
     final meals = ref.watch(mealsProvider);
+    final favoriteMealIds = ref.watch(favoritesProvider);
 
     return meals.where((meal) {
-      return _favoriteMealIds.contains(meal.id);
+      return favoriteMealIds.contains(meal.id);
     }).toList();
   }
 
@@ -123,14 +62,10 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       case 1:
         return MealsScreen(
           meals: _getFavoriteMeals(),
-          onToggleFavorite: _toggleFavorite,
-          isFavorite: _isFavorite,
         );
 
       default:
         return CategoriesScreen(
-          onToggleFavorite: _toggleFavorite,
-          isFavorite: _isFavorite,
           meals: _getFilteredMeals(),
           categories: ref.watch(categoriesProvider),
         );
