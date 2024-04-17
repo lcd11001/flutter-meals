@@ -19,12 +19,16 @@ class FiltersNotifier extends StateNotifier<Map<FilterType, bool>> {
   void toggleFilter(FilterType filterType) {
     final currentValue = state[filterType] ?? false;
 
+    setFilter(filterType, !currentValue);
+  }
+
+  void setFilter(FilterType filterType, bool value) {
     // not allowed => mutable state
-    // state[filterType] = !currentValue;
+    // state[filterType] = value;
 
     state = {
       ...state,
-      filterType: !currentValue,
+      filterType: value,
     };
   }
 
