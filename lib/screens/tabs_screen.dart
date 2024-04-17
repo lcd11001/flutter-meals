@@ -6,6 +6,7 @@ import 'package:meals/models/meal.dart';
 import 'package:meals/screens/categories_screen.dart';
 import 'package:meals/screens/filters_screen.dart';
 import 'package:meals/screens/meals_screen.dart';
+import 'package:meals/widgets/animation_slide_up.dart';
 
 import 'package:meals/widgets/main_drawer.dart';
 
@@ -48,14 +49,20 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   Widget _getActivePage() {
     switch (_selectedPageIndex) {
       case 1:
-        return MealsScreen(
-          meals: _getFavoriteMeals(),
+        return AnimationSlideUp.withDuration(
+          300,
+          child: MealsScreen(
+            meals: _getFavoriteMeals(),
+          ),
         );
 
       default:
-        return CategoriesScreen(
-          meals: _getFilteredMeals(),
-          categories: ref.watch(categoriesProvider),
+        return AnimationSlideUp.withDuration(
+          300,
+          child: CategoriesScreen(
+            meals: _getFilteredMeals(),
+            categories: ref.watch(categoriesProvider),
+          ),
         );
     }
   }
