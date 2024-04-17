@@ -7,9 +7,11 @@ class MealPortrait extends StatelessWidget {
   const MealPortrait({
     super.key,
     required this.meal,
+    this.height = 200,
   });
 
   final Meal meal;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class MealPortrait extends StatelessWidget {
           },
         ),
         imageErrorBuilder: (context, error, stackTrace) => Container(
-          height: 200,
+          height: height,
           decoration: BoxDecoration(
             color: colorScheme.errorContainer,
           ),
@@ -49,7 +51,7 @@ class MealPortrait extends StatelessWidget {
         ),
         imageSemanticLabel: "screen shot ${meal.title}",
         fit: BoxFit.cover,
-        height: 200,
+        height: height,
         width: double.infinity,
       ),
     );

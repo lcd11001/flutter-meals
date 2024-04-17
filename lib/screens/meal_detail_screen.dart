@@ -93,7 +93,10 @@ class MealDetailScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MealPortrait(meal: meal),
+            MealPortrait(
+              meal: meal,
+              height: 300,
+            ),
             const SizedBox(height: 20),
             _buildDetail(context, 'Ingredients', meal.ingredients),
             const SizedBox(height: 20),
