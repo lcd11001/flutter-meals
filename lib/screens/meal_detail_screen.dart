@@ -58,11 +58,21 @@ class MealDetailScreen extends ConsumerWidget {
           Semantics(
             label: 'Favorite',
             child: IconButton(
-              icon: Icon(
-                isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: isFavorite
-                    ? colorScheme.secondary
-                    : colorScheme.onBackground,
+              icon: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, animation) {
+                  return ScaleTransition(
+                    scale: animation,
+                    child: child,
+                  );
+                },
+                child: Icon(
+                  key: ValueKey(isFavorite),
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: isFavorite
+                      ? colorScheme.secondary
+                      : colorScheme.onBackground,
+                ),
               ),
               onPressed: () {
                 final wasAdded = ref
