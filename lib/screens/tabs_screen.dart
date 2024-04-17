@@ -70,19 +70,23 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     final selectedFilters = ref.watch(filtersProvider);
 
     return meals.where((meal) {
-      if (selectedFilters[FilterType.glutenFree]! && !meal.isGlutenFree) {
+      final isGlutenFree = selectedFilters[FilterType.glutenFree] ?? false;
+      if (isGlutenFree && !meal.isGlutenFree) {
         return false;
       }
 
-      if (selectedFilters[FilterType.lactoseFree]! && !meal.isLactoseFree) {
+      final isLactoseFree = selectedFilters[FilterType.lactoseFree] ?? false;
+      if (isLactoseFree && !meal.isLactoseFree) {
         return false;
       }
 
-      if (selectedFilters[FilterType.vegetarian]! && !meal.isVegetarian) {
+      final isVegetarian = selectedFilters[FilterType.vegetarian] ?? false;
+      if (isVegetarian && !meal.isVegetarian) {
         return false;
       }
 
-      if (selectedFilters[FilterType.vegan]! && !meal.isVegan) {
+      final isVegan = selectedFilters[FilterType.vegan] ?? false;
+      if (isVegan && !meal.isVegan) {
         return false;
       }
 

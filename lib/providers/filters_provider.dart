@@ -10,10 +10,10 @@ enum FilterType {
 class FiltersNotifier extends StateNotifier<Map<FilterType, bool>> {
   FiltersNotifier()
       : super({
-          FilterType.glutenFree: false,
-          FilterType.lactoseFree: false,
-          FilterType.vegetarian: false,
-          FilterType.vegan: false,
+          // FilterType.glutenFree: false,
+          // FilterType.lactoseFree: false,
+          // FilterType.vegetarian: false,
+          // FilterType.vegan: false,
         });
 
   void toggleFilter(FilterType filterType) {
