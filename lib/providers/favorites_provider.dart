@@ -8,8 +8,6 @@ class FavoriteMealsNotifier extends StateNotifier<List<String>> {
   bool toggleFavorite(String id) {
     // always create a new list
     // .add or .remove will not allow
-    debugPrint('toggleFavorite: $id');
-    debugPrint('before state: $state address: ${state.hashCode}');
     bool isExist = state.contains(id);
 
     if (isExist) {
@@ -20,7 +18,6 @@ class FavoriteMealsNotifier extends StateNotifier<List<String>> {
       state = [...state, id];
     }
 
-    debugPrint('after state: $state address: ${state.hashCode}');
     return !isExist;
   }
 }

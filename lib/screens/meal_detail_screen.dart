@@ -88,6 +88,7 @@ class MealDetailScreen extends ConsumerWidget {
             _buildDetail(context, 'Ingredients', meal.ingredients),
             const SizedBox(height: 20),
             _buildDetail(context, 'Steps', meal.steps),
+            const SizedBox(height: 60),
           ],
         ),
       ),
