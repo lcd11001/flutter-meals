@@ -25,12 +25,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   String _title = 'Categories';
 
   List<Meal> _getFavoriteMeals() {
-    final meals = ref.watch(mealsProvider);
-    final favoriteMealIds = ref.watch(favoritesProvider);
-
-    return meals.where((meal) {
-      return favoriteMealIds.contains(meal.id);
-    }).toList();
+    return ref.watch(favoriteMealsProvider);
   }
 
   void _selectPage(int index) {
@@ -66,32 +61,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   }
 
   List<Meal> _getFilteredMeals() {
-    final meals = ref.watch(mealsProvider);
-    final selectedFilters = ref.watch(filtersProvider);
-
-    return meals.where((meal) {
-      final isGlutenFree = selectedFilters[FilterType.glutenFree] ?? false;
-      if (isGlutenFree && !meal.isGlutenFree) {
-        return false;
-      }
-
-      final isLactoseFree = selectedFilters[FilterType.lactoseFree] ?? false;
-      if (isLactoseFree && !meal.isLactoseFree) {
-        return false;
-      }
-
-      final isVegetarian = selectedFilters[FilterType.vegetarian] ?? false;
-      if (isVegetarian && !meal.isVegetarian) {
-        return false;
-      }
-
-      final isVegan = selectedFilters[FilterType.vegan] ?? false;
-      if (isVegan && !meal.isVegan) {
-        return false;
-      }
-
-      return true;
-    }).toList();
+    return ref.watch(filterMealsProvider);
   }
 
   @override
