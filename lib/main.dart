@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:meals/data/dummy_data.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:meals/screens/tabs_screen.dart';
 import 'package:meals/theme.dart';
@@ -20,7 +20,11 @@ final ThemeData darkThemeData = ThemeData(
 );
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    const ProviderScope(
+      child: MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -32,10 +36,7 @@ class MainApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: lightThemeData,
       darkTheme: darkThemeData,
-      home: const TabsScreen(
-        meals: dummyMeals,
-        categories: availableCategories,
-      ),
+      home: const TabsScreen(),
     );
   }
 }

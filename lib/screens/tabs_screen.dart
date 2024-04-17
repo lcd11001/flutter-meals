@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meals/models/category.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:meals/models/meal.dart';
 
@@ -9,21 +9,16 @@ import 'package:meals/screens/meals_screen.dart';
 
 import 'package:meals/widgets/main_drawer.dart';
 
-class TabsScreen extends StatefulWidget {
-  final List<Meal> meals;
-  final List<Category> categories;
+import 'package:meals/providers/meal_provider.dart';
 
-  const TabsScreen({
-    super.key,
-    required this.meals,
-    required this.categories,
-  });
+class TabsScreen extends ConsumerStatefulWidget {
+  const TabsScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _TabsScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _TabsScreenState();
 }
 
-class _TabsScreenState extends State<TabsScreen> {
+class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
   String _title = 'Categories';
   final List<String> _favoriteMealIds = [];
@@ -98,7 +93,9 @@ class _TabsScreenState extends State<TabsScreen> {
     return _favoriteMealIds.contains(mealId);
   }
 
-  List<Meal> _getFavoriteMeals(List<Meal> meals) {
+  List<Meal> _getFavoriteMeals() {
+    final meals = ref.watch(mealsProvider);
+
     return meals.where((meal) {
       return _favoriteMealIds.contains(meal.id);
     }).toList();
@@ -125,7 +122,7 @@ class _TabsScreenState extends State<TabsScreen> {
     switch (_selectedPageIndex) {
       case 1:
         return MealsScreen(
-          meals: _getFavoriteMeals(widget.meals),
+          meals: _getFavoriteMeals(),
           onToggleFavorite: _toggleFavorite,
           isFavorite: _isFavorite,
         );
@@ -134,13 +131,15 @@ class _TabsScreenState extends State<TabsScreen> {
         return CategoriesScreen(
           onToggleFavorite: _toggleFavorite,
           isFavorite: _isFavorite,
-          meals: _getFilteredMeals(widget.meals),
-          categories: widget.categories,
+          meals: _getFilteredMeals(),
+          categories: ref.watch(categoriesProvider),
         );
     }
   }
 
-  List<Meal> _getFilteredMeals(List<Meal> meals) {
+  List<Meal> _getFilteredMeals() {
+    final meals = ref.watch(mealsProvider);
+
     return meals.where((meal) {
       if (_selectedFilters[FilterType.glutenFree]! && !meal.isGlutenFree) {
         return false;
