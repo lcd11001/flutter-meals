@@ -22,10 +22,6 @@ class FavoriteMealsNotifier extends StateNotifier<List<String>> {
     debugPrint('after state: $state address: ${state.hashCode}');
     return !isExist;
   }
-
-  bool isFavorite(String id) {
-    return state.contains(id);
-  }
 }
 
 final favoritesProvider =

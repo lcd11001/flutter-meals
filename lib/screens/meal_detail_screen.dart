@@ -47,9 +47,9 @@ class MealDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
-    final notifier = ref.watch(favoritesProvider.notifier);
 
-    final isFavorite = notifier.isFavorite(meal.id);
+    final favoriteMeals = ref.watch(favoritesProvider);
+    final isFavorite = favoriteMeals.contains(meal.id);
 
     return Scaffold(
       appBar: AppBar(
@@ -65,7 +65,9 @@ class MealDetailScreen extends ConsumerWidget {
                     : colorScheme.onBackground,
               ),
               onPressed: () {
-                final wasAdded = notifier.toggleFavorite(meal.id);
+                final wasAdded = ref
+                    .read(favoritesProvider.notifier)
+                    .toggleFavorite(meal.id);
 
                 _showInfoMessage(
                   context,

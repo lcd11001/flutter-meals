@@ -120,7 +120,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
           label: 'Categories',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.star),
+          icon: Icon(Icons.favorite),
           label: 'Favorites',
         ),
       ],
